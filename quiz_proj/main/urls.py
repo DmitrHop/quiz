@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-        path('main/', views.main, name = 'main'),
-        ]
+        path('', views.main, name = 'main'), # open "main" page on '127.0.0.1:8000/'
+]
