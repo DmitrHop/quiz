@@ -1,0 +1,11 @@
+:root
+{
+    --bg-body: rgb(85, 67, 74);
+    --txt-col: rgb(255, 255, 255);
+}
+
+body
+{
+    background-color: var(--bg-body);
+    color: var(--txt-col);
+}
