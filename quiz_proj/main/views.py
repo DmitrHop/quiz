@@ -9,4 +9,16 @@ def main(request):
 def quiz(request):
     all_quiz = Quiz.objects.all()
 
+    for i in all_quiz:
+        print (f'//{i.id}//')
+
     return render (request, 'quiz.html', {'data':all_quiz})
+
+
+def quiz_num(request, quiz_num):
+    cur_test = Quiz.objects.get(id = quiz_num)
+    question = cur_test.question_set.filter(id = 1)
+
+
+
+    return render (request, 'quiz_num.html', {'question':question})

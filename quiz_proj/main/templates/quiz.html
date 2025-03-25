@@ -9,7 +9,9 @@ quiz
 <h1>Quiz list</h1>
 
 {% for i in data %}
-<h4>{{i.id}} {{i.name}}</h4>
+<a href = "{% url 'quiz' i.id %}">
+    <h4>{{i.id}} {{i.name}}</h4>
+</a>
 {% endfor %}
 
 {% endblock %}
