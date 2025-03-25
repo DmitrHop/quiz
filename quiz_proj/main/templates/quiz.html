@@ -1,11 +1,15 @@
 {% extends 'pattern.html' %}
 
 {% block title %}
-main
+quiz
 {% endblock %}
 
 {% block body %}
-<p>Hello main</p>
 
-<a href = "{% url 'quiz_list' %}">Quiz list bro sh**t</a>
+<h1>Quiz list</h1>
+
+{% for i in data %}
+<h4>{{i.id}} {{i.name}}</h4>
+{% endfor %}
+
 {% endblock %}

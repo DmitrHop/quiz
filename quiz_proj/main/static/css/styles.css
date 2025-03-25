@@ -9,3 +9,8 @@ body
     background-color: var(--bg-body);
     color: var(--txt-col);
 }
+
+a
+{
+	color: white;
+}
