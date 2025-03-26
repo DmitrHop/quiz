@@ -2,6 +2,7 @@
 {
     --bg-body: rgb(85, 67, 74);
     --txt-col: rgb(255, 255, 255);
+    --ques-link-bg: rgb(201, 132, 132);
 }
 
 body
@@ -13,4 +14,18 @@ body
 a
 {
 	color: white;
+}
+
+.ques_list
+{
+    display: flex;
+    color: black;
+}
+
+.ques_link
+{
+    background: var(--ques-link-bg);
+    width: 50px;
+    height: 50px;
+    margin: 10px;
 }

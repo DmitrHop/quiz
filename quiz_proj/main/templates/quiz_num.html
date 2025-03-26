@@ -19,7 +19,13 @@ quiz{{data.id}}
 {% endfor %}
 
 
-{% for i in questions %} 
-
+<div class = ques_list>
+{% for i in all_questions %}
+<a href = "{% url 'ques_num' cur_test.id i.id %}">
+<!-- Изменить т.к. он постоянно обращается в бд за повторяющимися данными -->
+<div class = ques_link><p>{{forloop.counter}}. {{i.id}}</p></div>
+{% endfor %}
+</div>
+</a>
 
 {% endblock %}
