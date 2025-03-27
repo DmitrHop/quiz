@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{% block title %}{% endblock %}</title>
 	<link rel = "stylesheet" href="{% static "css/styles.css" %}">
+	<script type = "text/javascript" src = "{% static "js/scripts.js"%}"></script>
 </head>
 <body>
 	<div class = "header">
@@ -14,5 +15,6 @@
 		<a href = "{% url 'quiz_list' %}">Quiz list bro sh**t</a>
 	</div>
 	{% block body %}{% endblock %}
+
 </body>
 </html>
