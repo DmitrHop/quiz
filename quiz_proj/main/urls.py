@@ -9,3 +9,7 @@ urlpatterns = [
         path('quiz/quiz_num_<str:quiz_num>/', views.quiz_num, name='quiz'),
         path('quiz/quiz_num_<str:quiz_num>/<str:abs_ques>', views.ques_num, name='ques_num')
 ]
+
+# for add cache: path('quiz/', cache_page(60)(views.quiz), name = 'quiz_list')
+# where 60 is seconds for life
+# views.quiz - is view, that starts
