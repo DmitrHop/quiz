@@ -32,14 +32,20 @@ def quiz_num(request, quiz_num):
     return render (request, 'quiz_num.html', {'question':question})
 
 def ques_num(request, quiz_num, abs_ques):
-    print(f"\033[1;32;40m")
+    # print(f"\033[1;32;40m")
     cur_test = Quiz.objects.get(id = quiz_num)
-    print(f"\033[1;33;40m")
+    # print(f"\033[1;33;40m")
     cur_question = Question.objects.get(id = abs_ques)
-    print(f"\033[1;34;40m")
+    # print(f"\033[1;34;40m")
     answers = cur_question.answer_set.filter(ques = cur_question.id)
 
     all_questions = cur_test.question_set.all()
 
-    print(f"\033[1;0;40m")
+    # print(f"\033[1;0;40m")
     return render (request, 'quiz_num.html', {'question':cur_question, 'answers':answers, 'all_questions': all_questions, 'cur_test':cur_test})
+
+def login(request):
+    return render (request, 'login.html')
+    
+def register():
+    return render (request, 'register.html')

@@ -1,6 +1,7 @@
 :root
 {
     --bg-body: rgb(85, 67, 74);
+    --bg-input-block: rgb(39, 26, 26);
     --txt-col: rgb(255, 255, 255);
     --ques-link-bg: rgb(201, 132, 132);
 }
@@ -28,4 +29,13 @@ a
     width: 50px;
     height: 50px;
     margin: 10px;
+}
+
+#input
+{
+
+    background: var(--bg-input-block);
+    width: 500px;
+    height: 700px;
+    border-radius: 50px;
 }
