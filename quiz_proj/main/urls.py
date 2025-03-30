@@ -13,6 +13,7 @@ urlpatterns = [
         path('register', Register.as_view(), name = 'register'),
         path('personal_account', personal_account, name = 'personal_account'),
         path('password_reset', PasswordReset.as_view(), name = 'password_reset'),
+        path('create_quiz', CreateQuiz.as_view(), name = 'create_quiz'),
 ]
 
 # for add cache: path('quiz/', cache_page(60)(views.quiz), name = 'quiz_list')

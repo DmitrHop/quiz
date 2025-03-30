@@ -9,6 +9,7 @@ User = get_user_model()
 
 class UserCreationForm(UserCreationForm):
     email = forms.EmailField(
+        required = False,
         label=_("Email"),
         max_length=254,
         widget=forms.EmailInput(attrs={'autocomplete': 'email'})
@@ -18,10 +19,11 @@ class UserCreationForm(UserCreationForm):
         model = User
         fields = ('username', 'email')
 
+class CreateQuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['name',]
 
-# class RegisterForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ['username', 'first_name', 'last_name', 'password']
+    
 
 # passwd for dmitriy: PPdk4&3kdik
