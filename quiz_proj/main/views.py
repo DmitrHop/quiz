@@ -35,16 +35,24 @@ def quiz_num(request, quiz_num):
     return render (request, 'quiz_num.html', {'question':question})
 
 def ques_num(request, quiz_num, abs_ques):
+<<<<<<< HEAD
     
     cur_test = Quiz.objects.get(id = quiz_num)
 
     cur_question = Question.objects.get(id = abs_ques)
 
+=======
+    cur_test = Quiz.objects.get(id = quiz_num)
+    cur_question = Question.objects.get(id = abs_ques)
+>>>>>>> 71150d38cdb2d0694b3596f45e954cd92710ca6a
     answers = cur_question.answer_set.filter(ques = cur_question.id)
 
     all_questions = cur_test.question_set.all()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 71150d38cdb2d0694b3596f45e954cd92710ca6a
     return render (request, 'quiz_num.html', {'question':cur_question, 'answers':answers, 'all_questions': all_questions, 'cur_test':cur_test})
 
 class Login(LoginView):
