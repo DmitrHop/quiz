@@ -1,0 +1,18 @@
+{% extends 'in_template.html' %}
+
+{% block title %}
+register
+{% endblock %}
+
+{% block input %}
+
+<form action = "{% url 'register' %}" method = "post">
+    <h1>register</h1>
+    {% csrf_token %}
+    {{ form }}
+    <button class = "button" type = "submit">submit</button>
+    <button class = "button" type = "reset">reset</button>
+    <a class = "button" href = "{% url 'main' %}">go main</a>
+</form>
+
+{% endblock %}

@@ -2,20 +2,57 @@
 {
     --bg-body: rgb(85, 67, 74);
     --bg-input-block: rgb(39, 26, 26);
+    --bg-header: rgb(39, 47, 53);
+
+    --but-border-col: rgb(66, 14, 14);
+    --but-col: rgb(26, 0, 0);
+    --but-col-hov: rgb(45,0,0);
+    --but-col-clk: rgb(119, 36, 36);
+
     --txt-col: rgb(255, 255, 255);
     --ques-link-bg: rgb(201, 132, 132);
 }
 
+*
+{
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
 body
 {
+    margin: 50px 0px;
     background-color: var(--bg-body);
     color: var(--txt-col);
+    /* padding-top: 0px; */
+    /* height: 120vh; */
 }
 
 a
 {
-	color: white;
+	color: var(--txt-col);
 }
+
+.header
+{
+    position: fixed;
+    top: 0px;
+    display: table-cell;
+    vertical-align: middle;
+    height: 40px;
+    width:100vw;
+    background: var(--bg-header);
+}
+
+.header a
+{
+    margin: 0px 10px 0px 10px;
+}
+
+.main
+{
+    margin: 40px;
+}
+
 
 .ques_list
 {
@@ -33,9 +70,58 @@ a
 
 #input
 {
-
-    background: var(--bg-input-block);
+    margin: auto;
     width: 500px;
-    height: 700px;
+    /* align-items: center; */
+}
+
+#input h1, h2, h3
+{
+    text-align: center;
+}
+
+.common_btn
+{
+    display: inline-block;
+    padding: 0px;
+    background: transparent !important;
+    border-radius: 0px;
+}
+
+form
+{
+    padding: 50px;
+    background: var(--bg-input-block);
     border-radius: 50px;
 }
+
+/* .to_end
+{
+    justify-content: right;
+} */
+
+.button
+{
+    display: inline-block;
+    width: 100px;
+    /* height: 30px; */
+    background: var(--but-col);
+    color: white;
+    font-size: 20px;
+    border: 2px solid;
+    border-radius: 10px;
+    border-color: var(--but-border-col);
+    text-align: center;
+    text-decoration: none;
+}
+
+.button:hover
+{
+    background:var(--but-col-hov);
+}
+
+.button:active
+{
+    background: var(--but-col-clk);
+}
+

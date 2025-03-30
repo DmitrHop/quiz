@@ -1,0 +1,23 @@
+{% extends 'in_template.html' %}
+
+{% block title %}
+login
+{% endblock %}
+
+{% block input %}
+<form action = "{% url 'login' %}" method = "post">
+    <h1>login</h1>
+    {{ form.as_p }}
+    {% csrf_token %}
+    
+    <button class = "button" type = "submit">submit</button>
+    <button class = "button" type = "reset">reset</button>
+    <a class = "button" href = "{% url 'main' %}">go back</a>
+</form>
+
+<!-- <a href = "{% url 'password_reset' %}" style = "color = blue;">reset password</a> -->
+
+{% if form.error %}
+    <p style = "color:green">{{form.errors.error}}</p>
+{% endif %}
+{% endblock %}
