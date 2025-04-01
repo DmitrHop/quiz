@@ -6,7 +6,7 @@ class User(AbstractUser):
 
 class Quiz(models.Model):
     name = models.CharField(max_length=100)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default=7)
 
     def __str__(self):
         return f'ID: {self.id}, name: {self.name}'
