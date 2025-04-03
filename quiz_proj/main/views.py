@@ -88,25 +88,17 @@ def personal_account(request):
     return render(request, 'personal_account.html')
 
 class CreateQuiz(CreateView):
-    # model = Quiz
-    # fields = ['name',]
+    model = Quiz
+    fields = ['name',]
     template_name = 'create_quiz.html'
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user.id
+        form.instance.owner = self.request.user
         return super().form_valid(form)
     def post(self, request):
-        
-
         form = CreateQuizForm(request.POST)
-
+        form.instance.owner = self.request.user
         if form.is_valid():
             form.save()
             return redirect('main')
-        
-        context = {
-            'form': form,
-        }
-
-        return render (request, self.template_name, context)
     
