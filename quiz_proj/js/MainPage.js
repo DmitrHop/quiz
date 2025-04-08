@@ -7,6 +7,7 @@ const MainPage = () => {
       <h1>Welcome to the Quiz App</h1>
       <nav>
         <ul>
+          <li><Link to="/start a quiz">Start a Quiz</Link></li>
           <li><Link to="/quizzes">View Quizzes</Link></li>
           <li><Link to="/teacher">Teacher's Dashboard</Link></li>
           <li><Link to="/profile">My Profile</Link></li>
