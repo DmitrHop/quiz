@@ -9,25 +9,14 @@ const SignUp = () => {
   const history = useHistory();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-
-    const response = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password }),
-    });
-    const data = await response.json();
-
-    if (data.success) {
-      history.push('/login');
-    } else {
-      alert('Error during registration');
-    }
+      e.preventDefault();
+      try {
+          const response = await quizApi.post('login/', { username, password });
+          localStorage.setItem('token', response.data.token);
+          history.push('/mainpage'); 
+      } catch (error) {
+          alert('Log in error');
+      }
   };
 
   return (
