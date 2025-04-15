@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import API from "../api/api";
+import quizApi from '../api/quizApi';
 
 const QuizCreate = () => {
   const [title, setTitle] = useState("");

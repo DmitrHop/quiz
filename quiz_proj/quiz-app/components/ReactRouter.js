@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LogIn from '../../my-app/src/components/LogIn';
-import SignUp from '../../my-app/src/components/SignUp';
-import MainPage from '../../my-app/src/components/MainPage';
-import Profile from '../../my-app/src/components/Profile';
-import QuizList from '../../my-app/src/components/QuizList';
-import QuizPage from '../../my-app/src/components/QuizPage';
-import QuizResults from '../../my-app/src/components/QuizResults';
-import Teacher from '../../my-app/src/components/Teacher';
-import QuizCreate from '../../my-app/src/components/QuizCreate';
+import LogIn from '../../quiz-app/src/components/LogIn';
+import SignUp from '../../quiz-app/src/components/SignUp';
+import MainPage from '../../quiz-app/src/components/MainPage';
+import Profile from '../../quiz-app/src/components/Profile';
+import QuizList from '../../quiz-app/src/components/QuizList';
+import QuizPage from '../../quiz-app/src/components/QuizPage';
+import QuizResults from '../../quiz-app/src/components/QuizResults';
+import Teacher from '../../quiz-app/src/components/Teacher';
+import QuizCreate from '../../quiz-app/src/components/QuizCreate';
 
 const App = () => {
   return (

@@ -5,12 +5,9 @@ const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
 
   useEffect(() => {
-    const fetchQuizzes = async () => {
-      const quizzesData = await getQuizzes();
-      setQuizzes(quizzesData);
-    };
-
-    fetchQuizzes();
+    api.get('/quizzes/')
+      .then(res => setQuizzes(res.data))
+      .catch(err => console.error(err));
   }, []);
 
   return (

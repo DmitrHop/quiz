@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import API from "../api/api";
+import quizApi from '../api/quizApi';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
