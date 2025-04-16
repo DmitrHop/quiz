@@ -14,7 +14,6 @@ class Quiz(models.Model):
 class Question(models.Model):
     value = models.TextField()
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    num_in_quiz = models.IntegerField(null = True)
 
     def __str__(self):
         return str(self.id)

@@ -7,7 +7,44 @@ create quiz
 {% block body %}
     <form action = "{% url 'create_quiz' %}" method = "POST">
         {% csrf_token %}
-        {{ form }}
+        {{ ques_form.as_p }}
+	{{ ques_set.management_form }}
+	<div id = "ques_set_area">
+		{% for ques in ques_set %}
+	<div class = "ques-form">
+		{{ques.as_p}}
+	</div>
+		{% endfor %}
+	</div>
+	<button type = "button" id = "add-ques">Add question</button>
         <button type = "submit">Send</button>
     </form>
+
+    <script>
+    const addButton = document.getElementById('add-ques');
+    const formsetArea = document.getElementById('ques_set_area');
+    const totalFormsInput = document.getElementById('id_question_set-TOTAL_FORMS') || document.querySelector('[name$="-TOTAL_FORMS"]');
+
+    addButton.addEventListener('click', function () {
+        const totalForms = parseInt(totalFormsInput.value);
+        const lastForm = formsetArea.querySelector('.ques-form');
+        const newForm = lastForm.cloneNode(true);
+
+        // Обновляем атрибуты input'ов
+        newForm.querySelectorAll('input, textarea, select').forEach(function (input) {
+            if (input.name) {
+                input.name = input.name.replace(`-${totalForms - 1}-`, `-${totalForms}-`);
+            }
+            if (input.id) {
+                input.id = input.id.replace(`-${totalForms - 1}-`, `-${totalForms}-`);
+            }
+            input.value = ''; // очищаем значение
+        });
+
+        // Обновляем total_forms
+        totalFormsInput.value = totalForms + 1;
+
+        formsetArea.appendChild(newForm);
+    });
+</script>
 {% endblock %}

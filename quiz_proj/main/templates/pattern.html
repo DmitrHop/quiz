@@ -13,7 +13,7 @@
 	<div class = "header">
 		
 		<a href = "{% url 'main' %}">main</a>
-		<a href = "{% url 'quiz_list' %}">Quiz list bro sh**t</a>
+		<a href = "{% url 'quiz_list' %}">Quiz list</a>
 		{% if user.is_authenticated %}
 		<form class = "common_btn" action="{% url 'logout' %}" method="post">
 

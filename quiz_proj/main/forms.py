@@ -29,14 +29,21 @@ class CreateQuesForm(forms.ModelForm):
         model = Question
         fields = ['value', ]
 
-class CreateAnsForm(forms.ModelForm):
-    class Meta:
-        model = Answer
-        fields = ['value', 'isTrue']
-
-quesFormSet = forms.inlineformset_factory(Quiz, Question, form=CreateQuesForm, extra=1, can_delete=True)
-ansFormSet = forms.inlineformset_factory(Question, Answer, form=CreateAnsForm, extra=2, can_delete=True)
+quesFormSet = forms.inlineformset_factory(
+        Quiz, 
+        Question, 
+        form=CreateQuesForm, 
+        extra=1, 
+        can_delete=True
+)
+"""
+ansFormSet = forms.inlineformset_factory(
+        Question, 
+        Answer, 
+        form=CreateAnsForm, 
+        extra=2, 
+        can_delete=True
+)
 
     
-
-# passwd for dmitriy: PPdk4&3kdik
+"""

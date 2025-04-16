@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from main.models import Quiz, Answer, Question
+from main.models import *
 from main.forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.contrib.auth import authenticate, login
-from django.views.generic import CreateView
+from django.views.generic import CreateView, View
 # from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -87,18 +87,27 @@ class PasswordReset(PasswordResetView):
 def personal_account(request):
     return render(request, 'personal_account.html')
 
-class CreateQuiz(CreateView):
+class CreateQuiz(View):
     model = Quiz
-    fields = ['name',]
+    form_quiz = CreateQuizForm
     template_name = 'create_quiz.html'
 
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form)
-    def post(self, request):
-        form = CreateQuizForm(request.POST)
-        form.instance.owner = self.request.user
-        if form.is_valid():
-            form.save()
-            return redirect('main')
-    
+    def get(self, request, *args, **kwargs):
+        ques_form = self.form_quiz()
+        ques_set = quesFormSet()
+        return render(request, self.template_name, 
+                      {'ques_form': ques_form, 'ques_set': ques_set})
+
+    def post(self, request, *args, **kwargs):
+        ques_form = self.form_quiz(request.POST)
+        ques_set = quesFormSet(request.POST)
+        
+        if ques_form.is_valid() and ques_set.is_valid():
+                quiz = ques_form.save(commit = False)
+                quiz.owner = request.user
+                quiz.save()
+                ques_set.instance = quiz
+                ques_set.save()
+                return render(request, self.template_name, {'ques_form': ques_form, 'ques_set': ques_set})
+
+
