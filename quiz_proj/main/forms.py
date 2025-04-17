@@ -28,6 +28,10 @@ class CreateQuesForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ['value', ]
+class CreateAnsForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['value',]
 
 quesFormSet = forms.inlineformset_factory(
         Quiz, 
@@ -36,7 +40,7 @@ quesFormSet = forms.inlineformset_factory(
         extra=1, 
         can_delete=True
 )
-"""
+
 ansFormSet = forms.inlineformset_factory(
         Question, 
         Answer, 
@@ -44,6 +48,3 @@ ansFormSet = forms.inlineformset_factory(
         extra=2, 
         can_delete=True
 )
-
-    
-"""

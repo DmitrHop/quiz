@@ -95,19 +95,45 @@ class CreateQuiz(View):
     def get(self, request, *args, **kwargs):
         ques_form = self.form_quiz()
         ques_set = quesFormSet()
+        ans_sets = [ansFormSet() for i in range(len(ques_set.forms))]
         return render(request, self.template_name, 
-                      {'ques_form': ques_form, 'ques_set': ques_set})
+                      {'ques_form': ques_form,
+                       'ques_set': ques_set,
+                       'ans_sets': ans_sets})
 
     def post(self, request, *args, **kwargs):
         ques_form = self.form_quiz(request.POST)
         ques_set = quesFormSet(request.POST)
+        ans_sets = []
         
         if ques_form.is_valid() and ques_set.is_valid():
                 quiz = ques_form.save(commit = False)
                 quiz.owner = request.user
                 quiz.save()
                 ques_set.instance = quiz
-                ques_set.save()
-                return render(request, self.template_name, {'ques_form': ques_form, 'ques_set': ques_set})
+                ques_instances = ques_set.save(commit = False)
+                for i, ques in enumerate(ques_instances):
+                    ans_set = ansFormSet(request.POST)
+                    ans_sets.append(ans_set)
+
+                    if ans_set.is_valid():
+                        ques.quiz = quiz
+                        ques.save()
+                        ans_set.instance = ques
+                        ans_set.save()
+                    else:
+                        valid = False
+
+        if ques_form.is_valid() and ques_set.is_valid():
+            return redirect('main')
+
+        if not ans_sets:
+            ans_sets = [ansFormSet(request.POST) for i in range(len(ques_set.forms))]
+
+
+        return render(request, self.template_name, {
+            'ques_form': ques_form, 
+            'ques_set': ques_set,
+            'ans_sets': ans_sets})
 
 

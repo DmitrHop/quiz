@@ -11,9 +11,16 @@ create quiz
 	{{ ques_set.management_form }}
 	<div id = "ques_set_area">
 		{% for ques in ques_set %}
-	<div class = "ques-form">
-		{{ques.as_p}}
-	</div>
+			<div class = "ques-form">
+				{{ques.as_p}}
+
+				{{ ans_sets.forloop.parentloop.counter0.management_form }}
+                			{% for ans_form in ans_formsets.forloop.parentloop.counter0.forms %}
+                    			<div class="ans-form">
+                        			{{ ans_form.as_p }}
+                    			</div>
+                		{% endfor %}
+			</div>
 		{% endfor %}
 	</div>
 	<button type = "button" id = "add-ques">Add question</button>
