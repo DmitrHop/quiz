@@ -2,23 +2,22 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Profile = () => {
-  const [user, setUser] = useState({ username: 'Bulba', email: 'ogay-den@mail.ru' }); // можно заменить на авторизацию
+  const [user, setUser] = useState({ username: '', email: '' }); 
   const [results, setResults] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
 
   useEffect(() => {
-    setQuizzes([
-      { id: 1, title: 'Python начало' },
-      { id: 2, title: 'JavaScript Основы' },
-      { id: 3, title: 'React для начинающих' },
-    ]);
-
-    setResults([
-      { id: 1, quizId: 1, completed: true, score: 85 },
-      { id: 2, quizId: 2, completed: false, score: null },
-      { id: 3, quizId: 3, completed: true, score: 92 },
-    ]);
-
+    axios.get('http://localhost:8000/api/profile/')
+      .then(res => setUser(res.data))
+      .catch(err => console.error(err));
+  
+    axios.get('http://localhost:8000/api/results/')
+      .then(res => setResults(res.data))
+      .catch(err => console.error(err));
+  
+    axios.get('http://localhost:8000/api/quizzes/')
+      .then(res => setQuizzes(res.data))
+      .catch(err => console.error(err));
   }, []);
 
   const getQuizTitle = (id) => quizzes.find(q => q.id === id)?.title || '—';

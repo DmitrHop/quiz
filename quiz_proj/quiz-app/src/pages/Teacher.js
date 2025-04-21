@@ -9,41 +9,6 @@ const Teacher = () => {
   const [selectedStudent, setSelectedStudent] = useState('');
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    setQuizzes([
-      { id: 1, title: 'Python начало' },
-      { id: 2, title: 'JavaScript Основы' },
-      { id: 3, title: 'React для начинающих' },
-    ]);
-  
-    setStudents([
-      { id: 1, username: 'Denis Ogay' },
-    ]);
-  
-    setAssignments([
-      {
-        id: 1,
-        quizId: 1,
-        studentId: 1,
-        completed: true,
-        score: 85
-      },
-      {
-        id: 2,
-        quizId: 2,
-        studentId: 1,
-        completed: false,
-        score: null
-      },
-      {
-        id: 3,
-        quizId: 3,
-        studentId: 1,
-        completed: true,
-        score: 92
-      }
-    ]);
-  }, []);
 
   const assignQuiz = () => {
     if (!selectedQuiz || !selectedStudent) return;

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const QuizCreate = () => {
   const [title, setTitle] = useState('');
@@ -6,13 +8,30 @@ const QuizCreate = () => {
     { text: '', options: ['', '', '', ''], correct: 0 }
   ]);
 
+  const navigate = useNavigate();
+
   const handleAddQuestion = () => {
     setQuestions([...questions, { text: '', options: ['', '', '', ''], correct: 0 }]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ title, questions }); // Тут будет отправка на backend
+
+    const quizData = {
+      title,
+      questions: questions.map((q) => ({
+        text: q.text,
+        options: q.options,
+        correct: q.correct
+      }))
+    };
+
+    axios.post('http://localhost:8000/api/quizzes/', quizData)
+      .then(res => {
+        console.log('Квиз создан');
+        navigate('/quizzes');
+      })
+      .catch(err => console.error(err));
   };
 
   return (

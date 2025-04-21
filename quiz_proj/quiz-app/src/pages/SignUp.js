@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const SignUp = () => {
   const [username, setUsername] = useState('');
@@ -16,6 +17,14 @@ const SignUp = () => {
     setError('');
     console.log({ username, email, password });
   };
+
+  axios.post('http://localhost:8000/api/register/', {
+    username,
+    password,
+    email
+  })
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
 
   return (
     <div style={styles.container}>

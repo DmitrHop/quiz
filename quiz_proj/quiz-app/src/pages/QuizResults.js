@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const QuizResults = () => {
-  //  запрос backend для получения результатов
-  const results = [
-    { quiz: 'React Basics', score: 80 },
-    { quiz: 'HTML/CSS', score: 90 },
-  ];
+  const { quizId } = useParams(); 
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:8000/api/results/${quizId}/`)
+      .then(res => setResults(res.data))
+      .catch(err => console.error(err));
+  }, [quizId]);
 
   return (
     <div style={styles.container}>
       <h2>Ваши результаты</h2>
-      <ul>
-        {results.map((r, idx) => (
-          <li key={idx}>
-            {r.quiz}: {r.score}%
-          </li>
-        ))}
-      </ul>
+      {results.length === 0 ? (
+        <p>Результаты не найдены.</p>
+      ) : (
+        <ul>
+          {results.map((r, idx) => (
+            <li key={idx}>
+              {r.quiz}: {r.score}%
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

@@ -5,15 +5,17 @@ import axios from 'axios';
 const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const mockQuizzes = [
-      { id: 1, title: 'Python начало' },
-      { id: 2, title: 'JavaScript Основы' },
-      { id: 3, title: 'React для начинающих' },
-    ];
-    setQuizzes(mockQuizzes);
+    axios.get('http://localhost:8000/api/quizzes/')
+      .then(res => setQuizzes(res.data))
+      .catch(err => console.error(err));
 
+    axios.get('http://localhost:8000/api/quizzes/')
+      .then(res => setQuizzes(res.data))
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleStartQuiz = (id) => {
