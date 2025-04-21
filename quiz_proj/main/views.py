@@ -8,9 +8,17 @@ from django.contrib.auth import authenticate, login
 from django.views.generic import CreateView, View
 # from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _ 
+from random import randint
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Quiz
+from .serializers import QuizSerializer
 
 # from random import randint
+
+def index(request):
+    return render(request, 'index.html')
 
 def main(request):
     return render(request, 'main.html')
