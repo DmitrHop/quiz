@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const SignUp = () => {
@@ -7,24 +8,21 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError('Пароли не совпадают');
-      return;
-    }
-    setError('');
-    console.log({ username, email, password });
+    axios.post('http://localhost:8000/api/signup/', {
+      username,
+      email,
+      password
+    })
+    .then(response => {
+      console.log('Регистрация успешна:', response.data);
+      navigate('/login');
+    })
+    .catch(error => console.error('Ошибка регистрации:', error));
   };
-
-  axios.post('http://localhost:8000/api/register/', {
-    username,
-    password,
-    email
-  })
-  .then(res => console.log(res))
-  .catch(err => console.error(err));
 
   return (
     <div style={styles.container}>

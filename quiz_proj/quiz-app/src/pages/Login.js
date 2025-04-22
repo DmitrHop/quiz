@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
 
   const handleSubmit = (e) => {
@@ -15,7 +17,7 @@ const Login = () => {
     })
     .then(response => {
       localStorage.setItem('token', response.data.token);
-      console.log('Успешный вход!');
+      navigate('/profile');
     })
     .catch(error => console.error(error));
   };
