@@ -1,0 +1,24 @@
+{% extends 'pattern.html' %}
+
+{% block title %}
+    quiz{{data.id}}
+{% endblock %}
+
+{% block body %}
+
+    <h1>
+        {{question.value}}
+    </h1>
+    {% for i in answers %}
+        <h3>
+            {{forloop.counter}} {{i.value}}
+        </h3>
+        {% if i.isTrue %}
+            <h3 style = "color:green">True</h3>
+        {% else %}
+            <h3 style = "color:red">False</h3>
+        {% endif %}
+        <br>
+    {% endfor %}
+
+{% endblock %}

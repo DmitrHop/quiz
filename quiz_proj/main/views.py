@@ -1,45 +1,40 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from main.models import *
-from main.forms import *
+from .models import *
+from .forms import *
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.contrib.auth import authenticate, login
-from django.views.generic import CreateView, View
-# from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import CreateView, View, TemplateView
 
-# from random import randint
 
 def main(request):
     return render(request, 'main.html')
+
+# class Main(TemplateView):
+#     template_name = 'index.html'
 
 def quiz(request):
     all_quiz = Quiz.objects.all()
     arr = []
     for i in all_quiz:
-        tmp = {
-            'quiz': i,
-            'first_ques':i.question_set.get(num_in_quiz = 1),
-        }
-        arr.append(tmp)
+        arr.append({'quiz': i})
 
     return render (request, 'quiz.html', {'data':arr})
 
 
 def quiz_num(request, quiz_num):
     cur_test = Quiz.objects.get(id = quiz_num)
-    question = cur_test.question_set.filter(id = 1)
 
     return render (request, 'quiz_num.html', {'question':question})
 
 def ques_num(request, quiz_num, abs_ques):
-    
-    cur_test = Quiz.objects.get(id = quiz_num)
-
-    cur_question = Question.objects.get(id = abs_ques)
-
     cur_test = Quiz.objects.get(id = quiz_num)
     cur_question = Question.objects.get(id = abs_ques)
     answers = cur_question.answer_set.filter(ques = cur_question.id)

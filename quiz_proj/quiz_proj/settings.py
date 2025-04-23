@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'main',
-    
+    'rest_framework', # for connect react
+    'corsheaders', # for connect react
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # for connect react
 ]
 
 ROOT_URLCONF = 'quiz_proj.urls'
@@ -163,3 +165,7 @@ CACHES = {
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+# react
+
+CORS_ORIGIN_ALLOW_ALL = True

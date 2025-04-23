@@ -6,26 +6,17 @@ quiz{{data.id}}
 
 {% block body %}
 
-<h1>{{question.value}}</h1>
-{% for i in answers %}
-<h3>{{forloop.counter}} {{i.value}}</h3>
-{% if i.isTrue %}
-<h3 style = "color:green">True</h3>
-
-{% else %}
-<h3 style = "color:red">False</h3>
-{% endif %}
-<br>
-{% endfor %}
-
-
-<div class = ques_list>
-{% for i in all_questions %}
-<a href = "{% url 'ques_num' cur_test.id i.id %}">
-<!-- Изменить т.к. он постоянно обращается в бд за повторяющимися данными -->
-<div class = ques_link><p>{{forloop.counter}}. {{i.id}}</p></div>
-{% endfor %}
-</div>
-</a>
+    <div class = ques_list>
+        {% for i in all_questions %}
+            <a href = "{% url 'quiz_num' cur_test.id %}">
+            <!-- Изменить т.к. он постоянно обращается в бд за повторяющимися данными -->
+                <div class = ques_link>
+                    <p>
+                        {{forloop.counter}}
+                    </p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
 
 {% endblock %}
