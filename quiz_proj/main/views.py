@@ -96,6 +96,12 @@ class CreateQuiz(View):
         ques_form = self.form_quiz()
         ques_set = quesFormSet()
         ans_sets = [ansFormSet() for i in range(len(ques_set.forms))]
+
+        print("Количество вопросов:", len(ques_set.forms))
+        for i, ans_set in enumerate(ans_sets):
+            print(f"Вопрос {i + 1} — ответов: {len(ans_set.forms)}")
+
+            
         return render(request, self.template_name, 
                       {'ques_form': ques_form,
                        'ques_set': ques_set,
@@ -130,6 +136,10 @@ class CreateQuiz(View):
         if not ans_sets:
             ans_sets = [ansFormSet(request.POST) for i in range(len(ques_set.forms))]
 
+
+        print("Количество вопросов:", len(ques_set.forms))
+        for i, ans_set in enumerate(ans_sets):
+            print(f"Вопрос {i + 1} — ответов: {len(ans_set.forms)}")
 
         return render(request, self.template_name, {
             'ques_form': ques_form, 

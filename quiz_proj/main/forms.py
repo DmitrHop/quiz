@@ -38,7 +38,7 @@ quesFormSet = forms.inlineformset_factory(
         Question, 
         form=CreateQuesForm, 
         extra=1, 
-        can_delete=True
+        can_delete=True,
 )
 
 ansFormSet = forms.inlineformset_factory(
