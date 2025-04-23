@@ -11,16 +11,17 @@ create quiz
     {{ ques_form.as_p }}
 
     {{ ques_set.management_form }}
+    
     <div id="ques_set_area">
-        {% for ques_form in ques_set.forms %}
+        {{ ques_set.management_form }}
+
+        {% for ques_form, ans_formset in ques_ans_pairs %}
             <div class="ques-form">
                 {{ ques_form.as_p }}
-                <p>ques num: {{ forloop.counter }} ой блет</p>
 
                 <div class="ans-area">
-                    {{ ans_sets.forloop.counter0.management_form }}
-                    {% for ans_form in ans_sets.forloop.counter0.forms %}
-                        <p>ans num: {{ forloop.counter }}</p>
+                    {{ ans_formset.management_form }}
+                    {% for ans_form in ans_formset.forms %}
                         <div class="ans-form">
                             {{ ans_form.as_p }}
                             <button type="button" class="remove-answer">Remove answer</button>
@@ -32,6 +33,7 @@ create quiz
                 <button type="button" class="remove-question">Remove question</button>
             </div>
         {% endfor %}
+
     </div>
 
     <button type="button" id="add-ques">Add question</button>

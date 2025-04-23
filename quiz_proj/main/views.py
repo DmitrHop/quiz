@@ -97,15 +97,13 @@ class CreateQuiz(View):
         ques_set = quesFormSet()
         ans_sets = [ansFormSet() for i in range(len(ques_set.forms))]
 
-        print("Количество вопросов:", len(ques_set.forms))
-        for i, ans_set in enumerate(ans_sets):
-            print(f"Вопрос {i + 1} — ответов: {len(ans_set.forms)}")
+        ques_ans_pairs = list(zip(ques_set.forms, ans_sets))
 
-            
-        return render(request, self.template_name, 
-                      {'ques_form': ques_form,
-                       'ques_set': ques_set,
-                       'ans_sets': ans_sets})
+        return render(request, self.template_name, {
+            'ques_form': ques_form,
+            'ques_set': ques_set,
+            'ques_ans_pairs': ques_ans_pairs
+        })
 
     def post(self, request, *args, **kwargs):
         ques_form = self.form_quiz(request.POST)
@@ -137,13 +135,12 @@ class CreateQuiz(View):
             ans_sets = [ansFormSet(request.POST) for i in range(len(ques_set.forms))]
 
 
-        print("Количество вопросов:", len(ques_set.forms))
-        for i, ans_set in enumerate(ans_sets):
-            print(f"Вопрос {i + 1} — ответов: {len(ans_set.forms)}")
+        ques_ans_pairs = list(zip(ques_set.forms, ans_sets))
 
         return render(request, self.template_name, {
-            'ques_form': ques_form, 
+            'ques_form': ques_form,
             'ques_set': ques_set,
-            'ans_sets': ans_sets})
+            'ques_ans_pairs': ques_ans_pairs
+        })
 
 

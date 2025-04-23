@@ -31,7 +31,7 @@ class CreateQuesForm(forms.ModelForm):
 class CreateAnsForm(forms.ModelForm):
     class Meta:
         model = Answer
-        fields = ['value',]
+        fields = ['value','isTrue']
 
 quesFormSet = forms.inlineformset_factory(
         Quiz, 
