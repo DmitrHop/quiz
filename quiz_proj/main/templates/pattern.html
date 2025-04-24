@@ -12,8 +12,8 @@
 <body>
 	<div class = "header">
 		
-		<a href = "{% url 'main' %}">main</a>
-		<a href = "{% url 'quiz_list' %}">Quiz list</a>
+		<a class = "button" href = "{% url 'main' %}">main</a>
+		<a class = "button" href = "{% url 'quiz_list' %}">Quiz list</a>
 		{% if user.is_authenticated %}
 		<form class = "common_btn" action="{% url 'logout' %}" method="post">
 
@@ -23,10 +23,10 @@
 		
 		</form>
 
-		<a href = "{% url 'create_quiz' %}">create_quiz</a>
+		<a class = "button" href = "{% url 'create_quiz' %}">create_quiz</a>
 		{% else %}
-		<a class = "to_end" href = "{% url 'login' %}">login</a>
-		<a class = "to_end" href = "{% url 'register' %}">register</a>
+		<a class = "button" class = "to_end" href = "{% url 'login' %}">login</a>
+		<a class = "button" class = "to_end" href = "{% url 'register' %}">register</a>
 		{% endif %}
 	</div>
 	<div class = "main">
