@@ -8,11 +8,19 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, View, TemplateView
+from django.views.generic import CreateView, View, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+class QuizResults(LoginRequiredMixin, ListView):
+    model = QuizResult
+    template_name = 'results/quiz_results.html'
+    context_object_name = 'results'
+
+    def get_queryset(self):
+        return QuizResult.objects.filter(user=self.request.user)
 
 def main(request):
     return render(request, 'main.html')
@@ -21,27 +29,51 @@ def main(request):
 #     template_name = 'index.html'
 
 def quiz(request):
-    all_quiz = Quiz.objects.all()
-    arr = []
-    for i in all_quiz:
-        arr.append({'quiz': i})
+    quizzes = Quiz.objects.all()
+    return render(request, 'quiz.html', {'quizzes': quizzes})
 
-    return render (request, 'quiz.html', {'data':arr})
 
 
 def quiz_num(request, quiz_num):
-    cur_test = Quiz.objects.get(id = quiz_num)
+    cur_test = get_object_or_404(Quiz, id=quiz_num)
+    first_question = cur_test.question_set.order_by('num_in_quiz').first()
 
-    return render (request, 'quiz_num.html', {'question':question})
+    if first_question:
+        return redirect('ques_num', quiz_num=quiz_num, abs_ques=first_question.id)
+    else:
+        return redirect('main')
 
 def ques_num(request, quiz_num, abs_ques):
-    cur_test = Quiz.objects.get(id = quiz_num)
-    cur_question = Question.objects.get(id = abs_ques)
-    answers = cur_question.answer_set.filter(ques = cur_question.id)
-
+    cur_test = Quiz.objects.get(id=quiz_num)
+    cur_question = Question.objects.get(id=abs_ques)
+    answers = cur_question.answer_set.filter(ques=cur_question.id)
     all_questions = cur_test.question_set.all()
 
-    return render (request, 'quiz_num.html', {'question':cur_question, 'answers':answers, 'all_questions': all_questions, 'cur_test':cur_test})
+    if 'score' not in request.session:
+        request.session['score'] = 0
+
+    if request.method == 'POST':
+        selected_id = request.POST.get('selected_answer')
+        if selected_id:
+            selected_answer = Answer.objects.get(id=selected_id)
+            if selected_answer.isTrue:
+                request.session['score'] += 1
+
+        next_question = all_questions.filter(num_in_quiz=cur_question.num_in_quiz + 1).first()
+        if next_question:
+            return redirect('ques_num', quiz_num=quiz_num, abs_ques=next_question.id)
+        else:
+            user = request.user
+            QuizResult.objects.create(user=user, quiz=cur_test, score=request.session['score'])
+            del request.session['score']
+            return redirect('quiz_results')
+
+    return render(request, 'quiz_num.html', {
+        'question': cur_question,
+        'answers': answers,
+        'all_questions': all_questions,
+        'cur_test': cur_test
+    })
 
 class Login(LoginView):
     form = AuthenticationForm

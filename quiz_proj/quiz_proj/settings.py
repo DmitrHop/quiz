@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'main',
     'rest_framework', # for connect react
-    'corsheaders', # for connect react
+    #'corsheaders', # for connect react
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
