@@ -1,0 +1,33 @@
+{% extends "pattern.html" %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block body %}
+  <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.css">
+
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h1 class="fw-bold">Your Quiz Results</h1>
+      <p class="lead text-muted">See how you performed on your completed quizzes.</p>
+    </div>
+
+    {% if results %}
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-6">
+          <div class="d-grid gap-3">
+            {% for result in results %}
+              <div class="btn btn-dark btn-lg text-start">
+                <div class="fw-bold">Quiz: {{ result.quiz.name }}</div>
+                <div>Score: {{ result.score }}%</div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="alert alert-info text-center">
+        You haven't completed any quizzes yet.
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
