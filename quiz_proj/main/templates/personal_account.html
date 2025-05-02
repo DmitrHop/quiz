@@ -1,9 +1,22 @@
 {% extends 'pattern.html' %}
 
-{% block title %}
-You
-{% endblock %}
+{% block title %}Profile{% endblock %}
 
 {% block body %}
-<h1>Hello dear nigga, execuse me, dear {{name}}</h1>
+<link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.css">
+
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h1 class="fw-bold text-white"> {{ request.user.username }} 👋</h1>
+    <p class="lead text-light">Glad to see you on the quiz platform</p>
+  </div>
+
+  <div class="card shadow p-4 mx-auto text-center" style="max-width: 600px;">
+    <h4 class="mb-3 text-primary">You've completed 
+      <span class="fw-bold">{{ quiz_count }}</span> 
+      {{ quiz_count|pluralize:"quiz,quizzes" }} 0 quizzes!
+    </h4>
+    <a href="{% url 'main' %}" class="btn btn-lg btn-secondary w-100 mt-3">Back to Main Page</a>
+  </div>
+</div>
 {% endblock %}

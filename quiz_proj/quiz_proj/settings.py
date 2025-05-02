@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'main',
-    
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -163,3 +163,7 @@ CACHES = {
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+# react
+
+CORS_ORIGIN_ALLOW_ALL = True

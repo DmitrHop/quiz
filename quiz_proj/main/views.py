@@ -1,52 +1,91 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from main.models import *
-from main.forms import *
+from .models import *
+from .forms import *
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.contrib.auth import authenticate, login
-from django.views.generic import CreateView, View
-# from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import CreateView, View, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-# from random import randint
+class QuizResults(LoginRequiredMixin, ListView):
+    model = QuizResult
+    template_name = 'results/quiz_results.html'
+    context_object_name = 'results'
 
+    def get_queryset(self):
+        return QuizResult.objects.filter(user=self.request.user).select_related('quiz')
+    
 def main(request):
     return render(request, 'main.html')
 
-def quiz(request):
-    all_quiz = Quiz.objects.all()
-    arr = []
-    for i in all_quiz:
-        tmp = {
-            'quiz': i,
-            'first_ques':i.question_set.get(num_in_quiz = 1),
-        }
-        arr.append(tmp)
+# class Main(TemplateView):
+#     template_name = 'index.html'
 
-    return render (request, 'quiz.html', {'data':arr})
+def quiz(request):
+    quizzes = Quiz.objects.all()
+    return render(request, 'quiz.html', {'quizzes': quizzes})
+
 
 
 def quiz_num(request, quiz_num):
-    cur_test = Quiz.objects.get(id = quiz_num)
-    question = cur_test.question_set.filter(id = 1)
+    cur_test = get_object_or_404(Quiz, id=quiz_num)
+    first_question = cur_test.question_set.order_by('id').first()  
+    
+    if first_question:
+        return redirect('ques_num', quiz_num=quiz_num, abs_ques=first_question.id)
+    else:
+        return redirect('main')
 
-    return render (request, 'quiz_num.html', {'question':question})
 
 def ques_num(request, quiz_num, abs_ques):
-    
-    cur_test = Quiz.objects.get(id = quiz_num)
+    cur_test = Quiz.objects.get(id=quiz_num)
+    cur_question = get_object_or_404(Question, id=abs_ques, quiz=cur_test)
+    answers = cur_question.answer_set.all()
+    all_questions = list(cur_test.question_set.order_by('id'))  
 
-    cur_question = Question.objects.get(id = abs_ques)
+    if 'score' not in request.session:
+        request.session['score'] = 0
 
-    cur_test = Quiz.objects.get(id = quiz_num)
-    cur_question = Question.objects.get(id = abs_ques)
-    answers = cur_question.answer_set.filter(ques = cur_question.id)
+    if request.method == 'POST':
+        selected_id = request.POST.get('selected_answer')
+        if selected_id:
+            selected_answer = Answer.objects.get(id=selected_id)
+            if selected_answer.isTrue:
+                request.session['score'] += 1
 
-    all_questions = cur_test.question_set.all()
+        current_index = next((index for index, question in enumerate(all_questions) if question.id == cur_question.id), None)
 
-    return render (request, 'quiz_num.html', {'question':cur_question, 'answers':answers, 'all_questions': all_questions, 'cur_test':cur_test})
+        if current_index is not None and current_index + 1 < len(all_questions):
+            next_question = all_questions[current_index + 1]
+            return redirect('ques_num', quiz_num=quiz_num, abs_ques=next_question.id)
+        else:
+            user = request.user
+            total_questions = len(all_questions)
+            correct_answers = request.session['score']
+            score_percentage = (correct_answers / total_questions) * 100
+
+            QuizResult.objects.create(user=user, quiz=cur_test, score=score_percentage)
+            del request.session['score']
+            return redirect('quiz_results')
+
+    return render(request, 'quiz_num.html', {
+        'question': cur_question,
+        'answers': answers,
+        'all_questions': all_questions,
+        'cur_test': cur_test,
+        'quiz': cur_test,
+        'question_index': next((index for index, question in enumerate(all_questions) if question.id == cur_question.id), 0) + 1,
+        'total_questions': len(all_questions)
+    })
+
+
 
 class Login(LoginView):
     form = AuthenticationForm

@@ -1,31 +1,40 @@
 {% extends 'pattern.html' %}
 
-{% block title %}
-quiz{{data.id}}
-{% endblock %}
+{% block title %}Quiz: {{ quiz.name }}{% endblock %}
 
 {% block body %}
+<link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.min.css">
 
-<h1>{{question.value}}</h1>
-{% for i in answers %}
-<h3>{{forloop.counter}} {{i.value}}</h3>
-{% if i.isTrue %}
-<h3 style = "color:green">True</h3>
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-white">Quiz: {{ quiz.name }}</h2>
+    {% if total_questions > 0 %}
+      <p class="text-light">Question {{ question_index }} of {{ total_questions }}</p>
+    {% endif %}
+  </div>
 
-{% else %}
-<h3 style = "color:red">False</h3>
-{% endif %}
-<br>
-{% endfor %}
+  <div class="card p-4 shadow mx-auto" style="max-width: 700px;">
+    {% if question %}
+      <form method="POST">
+        {% csrf_token %}
+        <h4 class="mb-3">{{ question.value }}</h4>
 
+        {% for answer in answers %}
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="selected_answer" id="ans{{ forloop.counter }}" value="{{ answer.id }}">
+            <label class="form-check-label" for="ans{{ forloop.counter }}">
+              {{ answer.value }}
+            </label>
+          </div>
+        {% endfor %}
 
-<div class = ques_list>
-{% for i in all_questions %}
-<a href = "{% url 'ques_num' cur_test.id i.id %}">
-<!-- Изменить т.к. он постоянно обращается в бд за повторяющимися данными -->
-<div class = ques_link><p>{{forloop.counter}}. {{i.id}}</p></div>
-{% endfor %}
+        <button type="submit" class="btn btn-primary mt-4 w-100">Submit & Next</button>
+      </form>
+    {% else %}
+      <div class="text-center text-muted">
+        <h5>No questions in this quiz yet.</h5>
+      </div>
+    {% endif %}
+  </div>
 </div>
-</a>
-
 {% endblock %}

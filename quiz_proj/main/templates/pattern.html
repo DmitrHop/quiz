@@ -10,27 +10,32 @@
 	<!-- <script type = "text/javascript" src = "{% static "js/scripts.js"%}"></script> -->
 </head>
 <body>
-	<div class = "header">
-		
-		<a href = "{% url 'main' %}">main</a>
-		<a href = "{% url 'quiz_list' %}">Quiz list</a>
-		{% if user.is_authenticated %}
-		<form class = "common_btn" action="{% url 'logout' %}" method="post">
-
-			{% csrf_token %}
-		
-			<button type="submit">Log out</button>
-		
-		</form>
-
-		<a href = "{% url 'create_quiz' %}">create_quiz</a>
-		{% else %}
-		<a class = "to_end" href = "{% url 'login' %}">login</a>
-		<a class = "to_end" href = "{% url 'register' %}">register</a>
-		{% endif %}
+	<div class="header">
+		<div class="nav-buttons" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+			<div style="display: flex; gap: 15px;">
+				<a class="button" href="{% url 'main' %}">Main</a>
+				<a class="button" href="{% url 'quiz_list' %}">Quiz List</a>
+				{% if user.is_authenticated %}
+					<a class="button" href="{% url 'quiz_results' %}">Quiz Results</a>
+					<a class="button" href="{% url 'create_quiz' %}">Create Quiz</a>
+				{% endif %}
+			</div>
+	
+			<div style="display: flex; gap: 15px;">
+				{% if user.is_authenticated %}
+					<a class="button" href="{% url 'personal_account' %}">Profile</a>
+					<form class="common_btn" action="{% url 'logout' %}" method="post" style="margin: 0;">
+						{% csrf_token %}
+						<button type="submit" class="button">Log Out</button>
+					</form>
+				{% else %}
+					<a class="button" href="{% url 'login' %}">Login</a>
+					<a class="button" href="{% url 'register' %}">Register</a>
+				{% endif %}
+			</div>
+		</div>
 	</div>
 	<div class = "main">
-		<p>You: {{ user }}</p>
 		{% block body %}{% endblock %}
 	</div>
 
