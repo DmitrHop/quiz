@@ -44,8 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'main',
-    'rest_framework', # for connect react
-    #'corsheaders', # for connect react
     'widget_tweaks',
 ]
 
@@ -58,7 +56,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # for connect react
 ]
 
 ROOT_URLCONF = 'quiz_proj.urls'
