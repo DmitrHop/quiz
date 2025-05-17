@@ -31,3 +31,8 @@ class QuizResult(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.quiz.name} - {self.score}%'
+
+class QuesResult(models.Model):
+    quizRes = models.ForeignKey(QuizResult, on_delete=models.CASCADE)
+    isTrue = models.BooleanField()
+    ques = models.ForeignKey(Question, on_delete=models.CASCADE)
