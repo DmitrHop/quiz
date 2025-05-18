@@ -2,70 +2,93 @@
 {% load static %}
 
 {% block title %}
-create quiz
+Create Quiz
 {% endblock %}
 
 {% block body %}
 <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.min.css">
 
 <div class="container py-5">
-<div style="color: rgb(128, 95, 25);">    <h2 class="fw-bold text-center mb-4 text-light">Create a New Quiz</h2>
+  <h2 class="fw-bold text-center mb-4 text-light">Create a New Quiz</h2>
 
-    <form action="{% url 'create_quiz' %}" method="POST">
-        {% csrf_token %}
-        <div class="mb-4">
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-4">
+      {{ ques_form.as_p }}
+    </div>
+
+    {{ ques_set.management_form }}
+
+    <div id="ques_set_area">
+      {% for ques_form, ans_formset in ques_ans_pairs %}
+        <div class="ques-form bg-dark p-4 rounded shadow-sm mb-4" data-index="{{ forloop.counter0 }}">
           {{ ques_form.as_p }}
-        </div>
 
-        {{ ques_set.management_form }}
-        
-        <div id="ques_set_area">
-            {% for ques_form, ans_formset in ques_ans_pairs %}
-                <div class="ques-form bg-dark p-4 rounded shadow-sm mb-4">
-                    {{ ques_form.as_p }}
-
-                    <div class="ans-area mt-3">
-                        {{ ans_formset.management_form }}
-                        {% for ans_form in ans_formset.forms %}
-                            <div class="ans-form bg-secondary rounded p-3 mb-3">
-                                {{ ans_form.as_p }}
-                                <button type="button" class="btn btn-outline-danger btn-sm mt-2 remove-answer">Remove answer</button>
-                            </div>
-                        {% endfor %}
+          <div class="ans-area mt-3" data-prefix="{{ ans_formset.prefix }}">
+            {{ ans_formset.management_form }}
+            {% for ans_form in ans_formset.forms %}
+              <div class="ans-form bg-secondary rounded p-3 mb-3">
+                {% for field in ans_form %}
+                  {% if not field.name == 'DELETE' %}
+                    <div class="mb-2">
+                      {{ field.label_tag }}{{ field }}
                     </div>
+                  {% endif %}
+                {% endfor %}
+                {{ ans_form.DELETE }}
 
-                    <div class="mt-3 d-flex gap-2">
-                        <button type="button" class="btn btn-success btn-sm add-answer">Add answer</button>
-                        <button type="button" class="btn btn-danger btn-sm remove-question">Remove question</button>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-outline-danger btn-sm mt-2 remove-answer">Remove answer</button>
+              </div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div id="answer-template" class="d-none">
-            <div class="ans-form bg-secondary rounded p-3 mb-3">
-                <p>
-                    <label class="form-label text-light">Answer:</label>
-                    <input type="text" name="__prefix__-value" class="form-control">
-                </p>
-                <p>
-                    <label class="form-check-label text-light">Correct:</label>
-                    <input type="checkbox" name="__prefix__-isTrue" class="form-check-input">
-                </p>
-                <p>
-                    <input type="checkbox" name="__prefix__-DELETE" class="form-check-input"> <label class="form-check-label text-light">Delete</label>
-                </p>
-                <button type="button" class="btn btn-outline-danger btn-sm remove-answer mt-2">Remove answer</button>
-            </div>
+          <div class="mt-3 d-flex gap-2">
+            <button type="button" class="btn btn-success btn-sm add-answer">Add answer</button>
+            <button type="button" class="btn btn-danger btn-sm remove-question">Remove question</button>
+          </div>
         </div>
+      {% endfor %}
+    </div>
 
-        <div class="d-grid gap-2 mt-4">
-            <button type="button" id="add-ques" class="btn btn-info">Add question</button>
-            <button type="submit" class="btn btn-primary">Send Quiz</button>
-        </div>
-    </form>
-  </div>
+    <div id="answer-template" class="d-none">
+      <div class="ans-form bg-secondary rounded p-3 mb-3">
+        <p>
+          <label class="form-label text-dark">Answer:</label>
+          <input type="text" name="__prefix__-value" class="form-control">
+        </p>
+        <p>
+          <label class="form-check-label text-dark">Correct:</label>
+          <input type="checkbox" name="__prefix__-isTrue" class="form-check-input bg-primary border-light">
+
+        </p>
+
+              <p class="d-none">
+        <label>Delete:</label>
+        <input type="checkbox" name="__prefix__-DELETE" class="form-check-input">
+      </p>
+      <button type="button" class="btn btn-outline-danger btn-sm remove-answer mt-2">Remove answer</button>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 mt-4">
+      <button type="button" id="add-ques" class="btn btn-info">Add question</button>
+      <button type="submit" class="btn btn-primary">Send Quiz</button>
+    </div>
+  </form>
 </div>
+<head>
+  <style>
+  input.form-control:focus,
+  textarea.form-control:focus {
+    background-color: #e0d0d0; 
+    color: #000;
+  }
+
+  input.form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(73, 219, 54, 0.25); 
+  }
+</style>
+</head>
 {% endblock %}
 
 {% block scripts %}
