@@ -127,7 +127,11 @@ class PasswordReset(PasswordResetView):
 
 
 def personal_account(request):
-    return render(request, 'personal_account.html')
+    user = request.user
+    quiz_count = QuizResult.objects.filter(user=user).count()
+    return render(request, 'personal_account.html', {
+        'quiz_count': quiz_count
+    })
 
 
 class CreateQuiz(View):

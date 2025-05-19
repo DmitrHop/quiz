@@ -14,7 +14,7 @@
   <div class="card shadow p-4 mx-auto text-center" style="max-width: 600px;">
     <h4 class="mb-3 text-primary">You've completed 
       <span class="fw-bold">{{ quiz_count }}</span> 
-      {{ quiz_count|pluralize:"quiz,quizzes" }} 0 quizzes!
+      {{ quiz_count|pluralize:"quiz,quizzes" }}!
     </h4>
     <a href="{% url 'main' %}" class="btn btn-lg btn-secondary w-100 mt-3">Back to Main Page</a>
   </div>
