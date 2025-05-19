@@ -53,20 +53,18 @@ Create Quiz
     <div id="answer-template" class="d-none">
       <div class="ans-form bg-secondary rounded p-3 mb-3">
         <p>
-          <label class="form-label text-dark">Answer:</label>
-          <input type="text" name="__prefix__-value" class="form-control">
+          <label class="form-label text-dark" for="__prefix__-value">Answer:</label>
+          <input type="text" name="__prefix__-value" id="__prefix__-value" class="form-control">
         </p>
         <p>
-          <label class="form-check-label text-dark">Correct:</label>
-          <input type="checkbox" name="__prefix__-isTrue" class="form-check-input bg-primary border-light">
-
+          <label class="form-check-label text-dark" for="__prefix__-isTrue">Correct:</label>
+          <input type="checkbox" name="__prefix__-isTrue" id="__prefix__-isTrue" class="form-check-input bg-primary border-light">
         </p>
-
-              <p class="d-none">
-        <label>Delete:</label>
-        <input type="checkbox" name="__prefix__-DELETE" class="form-check-input">
-      </p>
-      <button type="button" class="btn btn-outline-danger btn-sm remove-answer mt-2">Remove answer</button>
+        <p class="d-none">
+          <label for="__prefix__-DELETE">Delete:</label>
+          <input type="checkbox" name="__prefix__-DELETE" id="__prefix__-DELETE" class="form-check-input">
+        </p>
+        <button type="button" class="btn btn-outline-danger btn-sm remove-answer mt-2">Remove answer</button>
       </div>
     </div>
 

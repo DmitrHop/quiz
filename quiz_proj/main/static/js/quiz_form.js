@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
   const quesContainer = document.getElementById('ques_set_area');
   const answerTemplate = document.getElementById('answer-template').innerHTML;
@@ -20,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
       wrapper.classList.add('ans-form', 'bg-secondary', 'rounded', 'p-3', 'mb-3');
       wrapper.innerHTML = newHtml;
 
+      wrapper.querySelectorAll('input, label').forEach(el => {
+        if (el.name) el.name = el.name.replace(/__prefix__/, `${prefix}-${formIndex}`);
+        if (el.id) el.id = el.id.replace(/__prefix__/, `${prefix}-${formIndex}`);
+        if (el.htmlFor) el.htmlFor = el.htmlFor.replace(/__prefix__/, `${prefix}-${formIndex}`);
+      });
+
       ansArea.appendChild(wrapper);
       totalInput.value = formIndex + 1;
     };
@@ -27,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function setupRemoveButtons() {
     document.addEventListener('click', function (e) {
-      // Удаление ответа
       if (e.target.classList.contains('remove-answer')) {
         const ansForm = e.target.closest('.ans-form');
         const deleteInput = ansForm.querySelector('input[name$="-DELETE"]');
@@ -39,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
 
-      // Удаление вопроса
       if (e.target.classList.contains('remove-question')) {
         const quesForm = e.target.closest('.ques-form');
         const deleteInput = quesForm.querySelector('input[name$="-DELETE"]');
@@ -53,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Инициализация для уже существующих блоков
   document.querySelectorAll('.ques-form').forEach((block, index) => {
     const ansArea = block.querySelector('.ans-area');
     if (ansArea) {
@@ -68,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   setupRemoveButtons();
 
-  // Добавление нового вопроса
   addQuesBtn.addEventListener('click', function () {
     const currentQuesCount = parseInt(totalQuesForms.value);
     const firstQues = document.querySelector('.ques-form');
@@ -76,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const newQues = firstQues.cloneNode(true);
 
-    // Очистка значений
     newQues.querySelectorAll('input, textarea, label').forEach(el => {
       if (el.name) el.name = el.name.replace(/question_set-\d+-/, `question_set-${currentQuesCount}-`);
       if (el.id) el.id = el.id.replace(/question_set-\d+-/, `question_set-${currentQuesCount}-`);
@@ -98,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     quesContainer.appendChild(newQues);
     setupAddAnswerButton(newQues);
-
     totalQuesForms.value = currentQuesCount + 1;
   });
 });
