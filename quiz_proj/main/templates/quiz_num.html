@@ -1,10 +1,8 @@
 {% extends 'pattern.html' %}
-
 {% block title %}Quiz: {{ quiz.name }}{% endblock %}
 
 {% block body %}
 <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.min.css">
-
 <div class="container mt-5">
   <div class="text-center mb-4">
     <h2 class="fw-bold text-white">Quiz: {{ quiz.name }}</h2>
@@ -13,28 +11,22 @@
     {% endif %}
   </div>
 
-  <div class="card p-4 shadow mx-auto" style="max-width: 700px;">
-    {% if question %}
-      <form method="POST">
-        {% csrf_token %}
-        <h4 class="mb-3">{{ question.value }}</h4>
+  <form method="post">
+    {% csrf_token %}
+    <h5 class="text-light">{{ question.value }}</h5>
 
-        {% for answer in answers %}
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="radio" name="selected_answer" id="ans{{ forloop.counter }}" value="{{ answer.id }}">
-            <label class="form-check-label" for="ans{{ forloop.counter }}">
-              {{ answer.value }}
-            </label>
-          </div>
-        {% endfor %}
-
-        <button type="submit" class="btn btn-primary mt-4 w-100">Submit & Next</button>
-      </form>
-    {% else %}
-      <div class="text-center text-muted">
-        <h5>No questions in this quiz yet.</h5>
+    {% for answer in answers %}
+      <div class="form-check text-light">
+        <input type="radio" class="form-check-input" name="selected_answer" id="answer_{{ answer.id }}" value="{{ answer.id }}">
+        <label class="form-check-label" for="answer_{{ answer.id }}">
+          {{ answer.value }}
+        </label>
       </div>
-    {% endif %}
-  </div>
+    {% empty %}
+      <p class="text-danger">No available answers for this question.</p>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary mt-3">Next</button>
+  </form>
 </div>
 {% endblock %}

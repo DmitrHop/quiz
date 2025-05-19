@@ -13,6 +13,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 
 class QuizResults(LoginRequiredMixin, ListView):
     model = QuizResult
@@ -47,8 +48,11 @@ def quiz_num(request, quiz_num):
 def ques_num(request, quiz_num, abs_ques):
     cur_test = Quiz.objects.get(id=quiz_num)
     cur_question = get_object_or_404(Question, id=abs_ques, quiz=cur_test)
-    answers = cur_question.answer_set.all()
+    answers = cur_question.answers.all()
     all_questions = list(cur_test.question_set.order_by('id'))  
+    print("Текущий вопрос:", cur_question.value)
+    print("Ответы:", list(answers))
+
 
     if 'score' not in request.session:
         request.session['score'] = 0
@@ -75,15 +79,14 @@ def ques_num(request, quiz_num, abs_ques):
             del request.session['score']
             return redirect('quiz_results')
 
-    return render(request, 'quiz_num.html', {
-        'question': cur_question,
-        'answers': answers,
-        'all_questions': all_questions,
-        'cur_test': cur_test,
-        'quiz': cur_test,
-        'question_index': next((index for index, question in enumerate(all_questions) if question.id == cur_question.id), 0) + 1,
-        'total_questions': len(all_questions)
-    })
+    return render(request, 'ques.html', {
+    'question': cur_question,
+    'answers': answers,
+    'question_index': all_questions.index(cur_question) + 1,
+    'total_questions': len(all_questions),
+    'cur_test': cur_test,
+})
+
 
 
 
@@ -124,20 +127,22 @@ class PasswordReset(PasswordResetView):
 
 
 def personal_account(request):
-    return render(request, 'personal_account.html')
+    user = request.user
+    quiz_count = QuizResult.objects.filter(user=user).count()
+    return render(request, 'personal_account.html', {
+        'quiz_count': quiz_count
+    })
+
 
 class CreateQuiz(View):
-    model = Quiz
-    form_quiz = CreateQuizForm
     template_name = 'create_quiz.html'
+    form_quiz = CreateQuizForm
 
     def get(self, request, *args, **kwargs):
         ques_form = self.form_quiz()
-        ques_set = quesFormSet()
-        ans_sets = [ansFormSet() for i in range(len(ques_set.forms))]
-
+        ques_set = quesFormSet(prefix='question_set')
+        ans_sets = [ansFormSet(prefix=f'ans_{i}') for i in range(len(ques_set.forms))]
         ques_ans_pairs = list(zip(ques_set.forms, ans_sets))
-
         return render(request, self.template_name, {
             'ques_form': ques_form,
             'ques_set': ques_set,
@@ -145,41 +150,49 @@ class CreateQuiz(View):
         })
 
     def post(self, request, *args, **kwargs):
+        print("POST данные получены:")
+        for k, v in request.POST.items():
+            print(f"{k} = {v}")
+
         ques_form = self.form_quiz(request.POST)
-        ques_set = quesFormSet(request.POST)
-        ans_sets = []
-        
-        if ques_form.is_valid() and ques_set.is_valid():
-                quiz = ques_form.save(commit = False)
-                quiz.owner = request.user
-                quiz.save()
-                ques_set.instance = quiz
-                ques_instances = ques_set.save(commit = False)
-                for i, ques in enumerate(ques_instances):
-                    ans_set = ansFormSet(request.POST)
-                    ans_sets.append(ans_set)
-
-                    if ans_set.is_valid():
-                        ques.quiz = quiz
-                        ques.save()
-                        ans_set.instance = ques
-                        ans_set.save()
-                    else:
-                        valid = False
+        ques_set = quesFormSet(request.POST, prefix='question_set')
 
         if ques_form.is_valid() and ques_set.is_valid():
+            quiz = ques_form.save(commit=False)
+            quiz.owner = request.user
+            quiz.save()
+            print("Квиз сохранён:", quiz.name)
+
+            ques_set.instance = quiz
+            questions = ques_set.save(commit=False)
+
+            for i, ques in enumerate(questions):
+                ques.quiz = quiz
+                ques.save()
+                print(f"Вопрос {i} сохранён: {ques.value}")
+
+                ans_set = ansFormSet(request.POST, prefix=f'ans_{i}')
+                ans_set.is_valid()
+                answers = ans_set.save(commit=False)
+                print(f"Ответов в ans_{i}: {len(answers)}")
+                for ans in answers:
+                    print(f"  ⮑ ответ: '{ans.value}', правильный: {ans.isTrue}")
+                    if not ans.value.strip():
+                        continue
+                    ans.question = ques
+                    ans.save()
+                    print(f"      ✅ Сохранён для вопроса: {ques.id}")
+                for obj in ans_set.deleted_objects:
+                    obj.delete()
+
             return redirect('main')
 
-        if not ans_sets:
-            ans_sets = [ansFormSet(request.POST) for i in range(len(ques_set.forms))]
-
-
+        print("⚠️ Форма квиза или вопросов невалидна")
+        ans_sets = [ansFormSet(request.POST, prefix=f'ans_{i}') for i in range(len(ques_set.forms))]
         ques_ans_pairs = list(zip(ques_set.forms, ans_sets))
-
         return render(request, self.template_name, {
             'ques_form': ques_form,
             'ques_set': ques_set,
             'ques_ans_pairs': ques_ans_pairs
         })
-
 
