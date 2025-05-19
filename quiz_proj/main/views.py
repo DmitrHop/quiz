@@ -3,7 +3,7 @@ from .forms import *
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.contrib.auth import authenticate, login
@@ -196,3 +196,29 @@ class CreateQuiz(View):
             'ques_ans_pairs': ques_ans_pairs
         })
 
+@login_required
+def students_progress(request):
+    me = request.user
+    subordinates = UserRelation.objects.filter(supervisor=me.id)
+    quizzes = Quiz.objects.all()
+    data = []
+    for student in subordinates:
+        
+        row = {
+            'student': student,
+            'results': []
+        }
+
+        # print("so so new " + str(student.subordinate))
+        
+        for quiz in quizzes:
+            attempts = QuizResult.objects.filter(user=student.subordinate)
+            scores = [f"{r.score}%" for r in attempts]
+            row['results'].append(scores)
+        data.append(row)
+        
+
+    return render(request, 'students_progress.html', {
+        'quizzes': quizzes,
+        'data': data
+    })

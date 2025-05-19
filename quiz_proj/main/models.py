@@ -2,7 +2,20 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
+
     pass
+
+
+class UserRelation(models.Model):
+    supervisor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='relation_as_supervisor')
+    subordinate = models.ForeignKey(User, on_delete=models.CASCADE, related_name='relation_as_subordinate')
+
+    class Meta:
+        unique_together = ('supervisor', 'subordinate')
+
+    def __str__(self):
+        return f'{self.supervisor} → {self.subordinate}'
+
 
 class Quiz(models.Model):
     name = models.CharField(max_length=100)

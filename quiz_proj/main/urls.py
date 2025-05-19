@@ -16,6 +16,7 @@ urlpatterns = [
         path('password_reset', PasswordReset.as_view(), name = 'password_reset'),
         path('create_quiz', CreateQuiz.as_view(), name = 'create_quiz'),
         path('quiz_results/', QuizResults.as_view(), name='quiz_results'),
+        path('students-progress/', students_progress, name='students_progress'),
 ]
 
 # for add cache: path('quiz/', cache_page(60)(views.quiz), name = 'quiz_list')

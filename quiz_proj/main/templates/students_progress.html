@@ -1,0 +1,32 @@
+{% extends 'pattern.html' %}
+{% block content %}
+<h2>Прогресс учеников</h2>
+
+<!--  in table: border="1" cellspacing="0" cellpadding="5" -->
+<table> 
+    <thead>
+        <tr>
+            <th>Имя ученика</th>
+            {% for quiz in quizzes %}
+                <th>{{ quiz.name }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            <td>{{ row.student.get_full_name|default:row.student.username }}</td>
+            {% for quiz_results in row.results %}
+                <td>
+                    {% for score in quiz_results %}
+                        {{ score }}<br>
+                    {% empty %}
+                        -
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
