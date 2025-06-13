@@ -1,0 +1,13 @@
+{% extends 'in_template.html' %}
+
+{% block title %}
+password reset
+{% endblock %}
+
+{% block input %}
+    <form action = "{% url 'password_reset' %}" method = "POST">
+        {{form}}
+        {% csrf_token %}
+        <button type = "submit">change password</button>
+    </form>
+{% endblock %}

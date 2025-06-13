@@ -1,0 +1,25 @@
+{% extends 'pattern.html' %}
+
+{% block title %}
+    Quiz {{ cur_test.name }}
+{% endblock %}
+
+{% block body %}
+  <div class="container mt-4">
+    <h2>{{ question.value }}</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for i in answers %}
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="selected_answer" value="{{ i.id }}" id="ans{{ i.id }}" required>
+          <label class="form-check-label" for="ans{{ i.id }}">
+            {{ i.value }}
+          </label>
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary mt-3">Answer</button>
+    </form>
+
+    <p class="mt-3">Question {{ question_index }} из {{ total_questions }}</p>
+  </div>
+{% endblock %}

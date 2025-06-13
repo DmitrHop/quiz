@@ -1,0 +1,137 @@
+{% extends 'in_template.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block input %}
+  <link rel="stylesheet" href="https://bootswatch.com/5/quartz/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card {
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-body {
+      background-color: #ffffff;
+      color: #212529;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-weight: bold;
+      color: #2c2f33;
+    }
+
+    label {
+      font-weight: 600;
+      color: #343a40;
+    }
+
+    .form-control {
+      color: #212529;
+      font-size: 16px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .form-control:focus {
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
+      color: #212529;
+      outline: none;
+    }
+
+    .btn-primary {
+      background-color: #13a538;
+      border: none;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-secondary {
+      background-color: #0dc0d8;
+      border: none;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    .btn-outline-dark {
+      background-color: #b038e7;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .alert-danger {
+      background-color: #f8d7da !important;
+      color: #721c24 !important;
+      border: 1px solid #f5c6cb;
+      padding: 12px 16px;
+      font-size: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-5">
+        <div class="card border-0">
+          <div class="card-body">
+            <h2>Login</h2>
+
+            <form method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+              {% for field in form %}
+                <div class="mb-3">
+                  <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                  {{ field|add_class:"form-control" }}
+                  {% for error in field.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endfor %}
+
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                  {% for error in form.non_field_errors %}
+                    <div>{{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <div class="d-grid gap-2">
+                <a href="{% url 'register' %}" class="btn btn-secondary">Register if not</a>
+                <button type="submit" class="btn btn-primary">Log In</button>
+                <a href="{% url 'main' %}" class="btn btn-outline-dark">Back to Main</a>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

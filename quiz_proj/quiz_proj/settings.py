@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'main.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 
 # Application definition
 
@@ -40,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'main',
-    
+    'widget_tweaks',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -89,6 +94,16 @@ DATABASES = {
     }
 }
 
+
+# Cache
+# https://docs.djangoproject.com/en/5.1/topics/cache/
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -149,3 +164,7 @@ CACHES = {
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+# react
+
+CORS_ORIGIN_ALLOW_ALL = True

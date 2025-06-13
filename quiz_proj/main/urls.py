@@ -1,13 +1,22 @@
-from django.urls import path, re_path
+from django.urls import include, path, re_path
 from django.views.decorators.cache import cache_page
-from . import views
+from main.views import *
+# from main.
 
 
 urlpatterns = [
-        path('', views.main, name = 'main'), # open "main" page on '127.0.0.1:8000/'
-        path('quiz/', views.quiz, name = 'quiz_list'), # open "quiz.html" page on '127.0.0.1:8000/quiz/'
-        path('quiz/quiz_num_<str:quiz_num>/', views.quiz_num, name='quiz'),
-        path('quiz/quiz_num_<str:quiz_num>/<str:abs_ques>', views.ques_num, name='ques_num')
+        path('', include('django.contrib.auth.urls')),
+        path('', main, name = 'main'), # open "main" page on '127.0.0.1:8000/'
+        path('quiz/', quiz, name = 'quiz_list'), # open "quiz.html" page on '127.0.0.1:8000/quiz/'
+        path('quiz/quiz_num_<str:quiz_num>/', quiz_num, name='quiz'),
+        path('quiz/quiz_num_<str:quiz_num>/<str:abs_ques>', ques_num, name='ques_num'),
+        path('login', Login.as_view(), name = 'login'),
+        path('register', Register.as_view(), name = 'register'),
+        path('personal_account', personal_account, name = 'personal_account'),
+        path('password_reset', PasswordReset.as_view(), name = 'password_reset'),
+        path('create_quiz', CreateQuiz.as_view(), name = 'create_quiz'),
+        path('quiz_results/', QuizResults.as_view(), name='quiz_results'),
+        path('students-progress/', students_progress, name='students_progress'),
 ]
 
 # for add cache: path('quiz/', cache_page(60)(views.quiz), name = 'quiz_list')
