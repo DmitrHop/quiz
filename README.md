@@ -23,7 +23,7 @@
 - python quiz_proj/manage.py runserver
 - in browser open web-application with 127.0.0.1:8000 or localhost:8000
 ##
-- Так же у вас должна быть база данных на постгрес
-- с именем базы данных quiz_db
-- с именем пользователя quiz_us
-- с паролем Jjop90
+- Для работы требуется база данных PostgreSQL
+- имя базы данных quiz_db
+- имя пользователя quiz_us
+- пароль Jjop90
