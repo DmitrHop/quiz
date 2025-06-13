@@ -28,6 +28,8 @@
 - имя пользователя quiz_us
 - пароль Jjop90
 
+## Скриншот сайта
+
   ![{A3F7ABC2-F164-4784-A4E9-DF4B6C4AAB81}](https://github.com/user-attachments/assets/0cd3a01f-24fb-4552-9db9-7efcdc28bb4a)
   
 
